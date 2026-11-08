@@ -1,6 +1,7 @@
 package cz.vsfs.danilalisitskii.beveragetracker.service;
 
 import cz.vsfs.danilalisitskii.beveragetracker.entity.Achievement;
+import cz.vsfs.danilalisitskii.beveragetracker.entity.BeverageType;
 import cz.vsfs.danilalisitskii.beveragetracker.entity.Consumption;
 import cz.vsfs.danilalisitskii.beveragetracker.entity.User;
 import cz.vsfs.danilalisitskii.beveragetracker.repository.AchievementRepository;
@@ -17,21 +18,41 @@ public class ConsumptionService {
     private final ConsumptionRepository consumptionRepository;
     private final UserRepository userRepository;
     private final AchievementRepository achievementRepository;
+    private final BeverageTypeService beverageTypeService;
 
-    public ConsumptionService(ConsumptionRepository consumptionRepository, UserRepository userRepository, AchievementRepository achievementRepository) {
+    public ConsumptionService(
+            ConsumptionRepository consumptionRepository,
+            UserRepository userRepository,
+            AchievementRepository achievementRepository,
+            BeverageTypeService beverageTypeService
+    ) {
         this.consumptionRepository = consumptionRepository;
         this.userRepository = userRepository;
         this.achievementRepository = achievementRepository;
+        this.beverageTypeService = beverageTypeService;
     }
 
     @Transactional
     public Consumption addConsumption(Long userId, Integer amountMl) {
+        return addConsumption(userId, amountMl, null);
+    }
+
+    @Transactional
+    public Consumption addConsumption(Long userId, Integer amountMl, Long beverageTypeId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
+        BeverageType beverageType = (beverageTypeId != null)
+                ? beverageTypeService.findById(beverageTypeId)
+                : beverageTypeService.getOrDefaultWater();
+
+        int effectiveHydrationMl = (int) Math.round(amountMl * beverageType.getHydrationFactor());
+
         Consumption consumption = new Consumption();
         consumption.setUser(user);
+        consumption.setBeverageType(beverageType);
         consumption.setAmountMl(amountMl);
+        consumption.setEffectiveHydrationMl(effectiveHydrationMl);
         consumption.setCreatedAt(LocalDateTime.now());
         consumption = consumptionRepository.save(consumption);
 

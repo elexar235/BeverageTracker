@@ -23,12 +23,12 @@ public class ConsumptionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ConsumptionDto drinkCola(@RequestBody @Valid ConsumptionCreateDto createDto) {
-        if (createDto.getAmountMl() < 330) {
-            throw new IllegalArgumentException("Amount must be at least 330, lol, a sip doesn't count");
-        }
-        
-        Consumption consumption = consumptionService.addConsumption(createDto.getUserId(), createDto.getAmountMl());
+    public ConsumptionDto addConsumption(@RequestBody @Valid ConsumptionCreateDto createDto) {
+        Consumption consumption = consumptionService.addConsumption(
+                createDto.getUserId(),
+                createDto.getAmountMl(),
+                createDto.getBeverageTypeId()
+        );
         return consumptionMapper.toDto(consumption);
     }
 

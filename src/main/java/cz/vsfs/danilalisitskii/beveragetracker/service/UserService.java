@@ -29,6 +29,9 @@ public class UserService {
     }
 
     public User create(User user) {
+        if (user.getDailyWaterGoalMl() == null) {
+            user.setDailyWaterGoalMl(2000);
+        }
         return userRepository.save(user);
     }
 
@@ -37,6 +40,9 @@ public class UserService {
         
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
+        if (userDetails.getDailyWaterGoalMl() != null) {
+            user.setDailyWaterGoalMl(userDetails.getDailyWaterGoalMl());
+        }
         
         return userRepository.save(user);
     }

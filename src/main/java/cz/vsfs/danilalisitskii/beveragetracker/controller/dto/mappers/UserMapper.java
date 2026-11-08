@@ -22,6 +22,7 @@ public class UserMapper {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getDailyWaterGoalMl() != null ? user.getDailyWaterGoalMl() : 2000,
                 achievementNames
         );
     }
@@ -29,7 +30,8 @@ public class UserMapper {
     public User toEntity(UserCreateDto userCreateDto) {
         return new User(
                 userCreateDto.getUsername(),
-                userCreateDto.getEmail()
+                userCreateDto.getEmail(),
+                userCreateDto.getDailyWaterGoalMl()
         );
     }
 }

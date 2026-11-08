@@ -41,9 +41,19 @@ public class User {
     @Email(message = "Doesn't look like an email.") // checks whether it has @ and .
     private String email;
 
+    @Column(name = "daily_water_goal_ml")
+    private Integer dailyWaterGoalMl = 2000;
+
     public User(String username, String email) {
         this.username = username;
         this.email = email;
+        this.dailyWaterGoalMl = 2000;
+    }
+
+    public User(String username, String email, Integer dailyWaterGoalMl) {
+        this.username = username;
+        this.email = email;
+        this.dailyWaterGoalMl = dailyWaterGoalMl != null ? dailyWaterGoalMl : 2000;
     }
 
     @Override

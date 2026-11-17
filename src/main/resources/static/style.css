@@ -3,8 +3,8 @@
     --card-bg: #1e293b;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
-    --primary: #f43f5e;
-    --primary-hover: #e11d48;
+    --primary: #0ea5e9;
+    --primary-hover: #0284c7;
     --success: #10b981;
     --success-hover: #059669;
 }
@@ -22,19 +22,26 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1080px;
     padding: 2rem;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+}
+
+.brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin: 0;
-    background: linear-gradient(to right, #f43f5e, #fbbf24);
+    background: linear-gradient(to right, #38bdf8, #34d399);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -42,7 +49,45 @@ header h1 {
 
 header p {
     color: var(--text-secondary);
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    margin: 0.3rem 0 0 0;
+}
+
+.logged-in-pill,
+.logged-out-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.role-badge {
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.role-badge.admin {
+    background: rgba(244, 63, 94, 0.2);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.role-badge.user {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.goal-tag {
+    color: #34d399;
+    font-weight: 600;
 }
 
 .grid {
@@ -52,21 +97,45 @@ header p {
     margin-bottom: 1.5rem;
 }
 
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .card {
     background-color: var(--card-bg);
     padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    border: 1px solid #334155;
 }
 
-.card:hover {
-    transform: translateY(-2px);
+.admin-card {
+    border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.sub-card {
+    background: rgba(15, 23, 42, 0.55);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #334155;
+}
+
+.sub-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    margin-top: 0;
+    font-size: 0.92rem;
 }
 
 .full-width {
     grid-column: 1 / -1;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 h2 {
@@ -75,6 +144,13 @@ h2 {
     border-bottom: 1px solid #334155;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
 }
 
 .form-group {
@@ -83,26 +159,50 @@ h2 {
 
 label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
-input {
+.highlight-text {
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+input,
+select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.7rem;
     background: #334155;
     border: 1px solid #475569;
     border-radius: 0.5rem;
     color: white;
-    font-size: 1rem;
+    font-size: 0.95rem;
     box-sizing: border-box;
-    /* Fix padding issue */
 }
 
-input:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: var(--primary);
+}
+
+.quick-amounts {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.chip-btn {
+    background: #334155;
+    border: 1px solid #475569;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 0.4rem;
+}
+
+.chip-btn:hover {
+    background: #475569;
 }
 
 button {
@@ -138,6 +238,15 @@ button {
     padding: 0.5rem 1rem;
 }
 
+.btn-secondary.full-btn {
+    width: 100%;
+}
+
+.btn-secondary.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+}
+
 .btn-secondary:hover {
     background-color: #64748b;
 }
@@ -145,13 +254,41 @@ button {
 .btn-danger {
     background-color: #ef4444;
     width: auto;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    padding: 0.45rem 0.9rem;
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
 }
 
 .btn-danger:hover {
     background-color: #dc2626;
+}
+
+.beverage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.beverage-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: #334155;
+    padding: 0.7rem 1rem;
+    border-radius: 0.6rem;
+}
+
+.bev-icon {
+    font-size: 1.5rem;
+}
+
+.bev-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.bev-info small {
+    color: var(--text-secondary);
 }
 
 .achievement-badge {
@@ -160,7 +297,7 @@ button {
     color: #451a03;
     padding: 0.2rem 0.5rem;
     border-radius: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     margin: 0.2rem;
     font-weight: 600;
 }
@@ -175,9 +312,9 @@ button {
 .header-row h2 {
     margin-bottom: 0;
     border: none;
+    padding-bottom: 0;
 }
 
-/* Table */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -185,7 +322,7 @@ table {
 
 th,
 td {
-    padding: 1rem;
+    padding: 0.9rem;
     text-align: left;
     border-bottom: 1px solid #334155;
 }
@@ -201,14 +338,14 @@ tr:last-child td {
 
 .users-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1rem;
 }
 
 .user-item {
     background: #334155;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0.65rem;
     text-align: center;
 }
 
@@ -216,17 +353,17 @@ tr:last-child td {
     background: #475569;
     padding: 0.2rem 0.5rem;
     border-radius: 0.3rem;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: #cbd5e1;
 }
 
 .user-item h3 {
-    margin: 0.5rem 0;
+    margin: 0.55rem 0 0.25rem 0;
     font-size: 1.1rem;
 }
 
 .user-item p {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     margin: 0;
 }

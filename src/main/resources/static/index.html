@@ -4,55 +4,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cola Server App</title>
+    <title>BeverageTracker — Gamified Hydration Platform</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <div class="container">
         <header>
-            <h1>🥤 Cola Server</h1>
-            <p>Drink Coke by the liter!</p>
+            <div class="brand-header">
+                <div>
+                    <h1>💧 BeverageTracker</h1>
+                    <p>Gamified Hydration &amp; Beverage Consumption Tracking</p>
+                </div>
+                <div id="authStatusBox" class="auth-status-box">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
         </header>
 
-        <div class="grid">
-            <!-- Add User -->
+        <!-- Auth Section (Login & Register) -->
+        <div id="authSection" class="grid">
             <div class="card">
-                <h2>New Drinker</h2>
-                <form id="addUserForm">
+                <h2>🔐 Sign In (JWT Auth)</h2>
+                <form id="loginForm">
                     <div class="form-group">
                         <label>Username</label>
-                        <input type="text" id="username" placeholder="e.g. Dannka" required>
+                        <input type="text" id="loginUsername" placeholder="e.g. admin or danila" required>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" placeholder="e.g. dan@cola.cz" required>
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
                     </div>
-                    <button type="submit" class="btn-primary">Create User</button>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                    <button type="button" onclick="quickAdminLogin()" class="btn-secondary full-btn" style="margin-top: 0.6rem;">
+                        ⚡ Quick Demo Login as Admin (admin / admin123)
+                    </button>
                 </form>
             </div>
 
             <div class="card">
-                <h2>Add Drink</h2>
-                <form id="addConsumptionForm">
-                    <div class="form-group">
-                        <label>User ID</label>
-                        <input type="number" id="userId" placeholder="User ID" required>
+                <h2>✨ Register Account</h2>
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="regUsername" placeholder="e.g. danila" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="regEmail" placeholder="danila@vsfs.cz" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Amount (ml)</label>
-                        <input type="number" id="amount" placeholder="e.g. 500" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Password (min 6 chars)</label>
+                            <input type="password" id="regPassword" placeholder="••••••••" minlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Daily Water Goal (ml)</label>
+                            <input type="number" id="regGoal" value="2000" min="500" max="10000" required>
+                        </div>
                     </div>
-                    <button type="submit" class="btn-success">Drink!</button>
+                    <button type="submit" class="btn-success">Create Account &amp; Sign In</button>
                 </form>
             </div>
         </div>
 
+        <!-- Main Actions: Log Drink & Beverage Catalog -->
+        <div class="grid">
+            <div class="card">
+                <h2>🥤 Log Beverage Intake</h2>
+                <form id="addConsumptionForm">
+                    <div class="form-group">
+                        <label>User</label>
+                        <select id="userId" required>
+                            <option value="">Select user...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Beverage Type (Hydration Coefficient)</label>
+                        <select id="beverageTypeId" required>
+                            <option value="">Loading beverages...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Volume (ml) — <span id="effectivePreview" class="highlight-text">Effective hydration: 250 ml</span></label>
+                        <input type="number" id="amount" value="250" min="10" max="3000" required>
+                        <div class="quick-amounts">
+                            <button type="button" class="chip-btn" onclick="setAmount(200)">200 ml</button>
+                            <button type="button" class="chip-btn" onclick="setAmount(250)">250 ml</button>
+                            <button type="button" class="chip-btn" onclick="setAmount(330)">330 ml</button>
+                            <button type="button" class="chip-btn" onclick="setAmount(500)">500 ml</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-success">Log Intake 💧</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="header-row">
+                    <h2>🍵 Beverage Catalog</h2>
+                    <button onclick="loadBeverageTypes()" class="btn-secondary">Refresh</button>
+                </div>
+                <div id="beverageTypesList" class="beverage-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel (Protected by ROLE_ADMIN on Backend) -->
+        <div id="adminPanel" class="card full-width admin-card">
+            <div class="header-row">
+                <h2>🛡️ Administrator Control Panel <span class="role-badge admin">ROLE_ADMIN Required</span></h2>
+            </div>
+            <p class="subtitle">Create new beverage types with custom hydration factors or configure gamification achievements.</p>
+
+            <div class="grid" style="margin-top: 1rem; margin-bottom: 0;">
+                <form id="addBeverageForm" class="sub-card">
+                    <h3>➕ Add Beverage Type</h3>
+                    <div class="form-group">
+                        <label>Beverage Name</label>
+                        <input type="text" id="bevName" placeholder="e.g. Green Matcha" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hydration Factor (0.1–1.5)</label>
+                            <input type="number" id="bevFactor" step="0.05" min="0.1" max="1.5" value="0.90" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Icon (Emoji)</label>
+                            <input type="text" id="bevIcon" value="🍵" maxlength="4" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Beverage Type</button>
+                </form>
+
+                <form id="addAchievementForm" class="sub-card">
+                    <h3>🏅 Create New Achievement</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Badge Title</label>
+                            <input type="text" id="achName" placeholder="e.g. Hydro Champion" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Points</label>
+                            <input type="number" id="achPoints" value="75" min="5" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="achDesc" placeholder="e.g. Log 15 beverage intakes" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Required Logged Drinks</label>
+                        <input type="number" id="achRequired" value="15" min="1" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Create Achievement</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
         <div class="card full-width">
             <div class="header-row">
-                <h2>🏆 Leaderboard</h2>
+                <h2>🏆 Hydration Leaderboard</h2>
                 <button onclick="loadLeaderboard()" class="btn-secondary">Refresh</button>
             </div>
             <table id="leaderboardTable">
@@ -60,7 +177,7 @@
                     <tr>
                         <th>Rank</th>
                         <th>User</th>
-                        <th>Total Liters</th>
+                        <th>Total Volume</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,22 +185,20 @@
             </table>
         </div>
 
-
         <!-- Available Achievements -->
         <div class="card full-width">
             <div class="header-row">
-                <h2>🏆 Hall of Fame (Objectives)</h2>
+                <h2>🎖️ Gamification Achievements</h2>
                 <button onclick="loadAchievements()" class="btn-secondary">Refresh</button>
             </div>
             <div id="achievementsList" class="users-grid">
-                <!-- JS will populate -->
             </div>
         </div>
 
         <!-- Users List -->
         <div class="card full-width">
             <div class="header-row">
-                <h2>Users List</h2>
+                <h2>👥 Registered Users &amp; Daily Goals</h2>
                 <button onclick="loadUsers()" class="btn-secondary">Refresh</button>
             </div>
             <div id="usersList" class="users-grid">

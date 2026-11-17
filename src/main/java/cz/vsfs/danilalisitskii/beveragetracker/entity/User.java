@@ -44,16 +44,25 @@ public class User {
     @Column(name = "daily_water_goal_ml")
     private Integer dailyWaterGoalMl = 2000;
 
+    @Column(name = "password_hash")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role = Role.ROLE_USER;
+
     public User(String username, String email) {
         this.username = username;
         this.email = email;
         this.dailyWaterGoalMl = 2000;
+        this.role = Role.ROLE_USER;
     }
 
     public User(String username, String email, Integer dailyWaterGoalMl) {
         this.username = username;
         this.email = email;
         this.dailyWaterGoalMl = dailyWaterGoalMl != null ? dailyWaterGoalMl : 2000;
+        this.role = Role.ROLE_USER;
     }
 
     @Override

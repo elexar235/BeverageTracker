@@ -13,6 +13,7 @@ public class UserDto {
     private String username;
     private String email;
     private Integer dailyWaterGoalMl;
+    private String role;
 
     private List<String> achievements; // just strings instead of Achievement objects to avoid stackoverflow
 
@@ -21,6 +22,7 @@ public class UserDto {
         this.username = username;
         this.email = email;
         this.dailyWaterGoalMl = 2000;
+        this.role = "ROLE_USER";
         this.achievements = achievements;
     }
 
@@ -29,6 +31,16 @@ public class UserDto {
         this.username = username;
         this.email = email;
         this.dailyWaterGoalMl = dailyWaterGoalMl;
+        this.role = "ROLE_USER";
+        this.achievements = achievements;
+    }
+
+    public UserDto(Long id, String username, String email, Integer dailyWaterGoalMl, String role, List<String> achievements) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.dailyWaterGoalMl = dailyWaterGoalMl;
+        this.role = role;
         this.achievements = achievements;
     }
 }

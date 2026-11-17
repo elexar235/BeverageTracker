@@ -23,6 +23,7 @@ public class UserMapper {
                 user.getUsername(),
                 user.getEmail(),
                 user.getDailyWaterGoalMl() != null ? user.getDailyWaterGoalMl() : 2000,
+                user.getRole() != null ? user.getRole().name() : "ROLE_USER",
                 achievementNames
         );
     }

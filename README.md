@@ -166,7 +166,7 @@ cd beverageTracker
 ## 🗺️ Engineering Roadmap
 
 - [x] **Phase 1 — Core Domain & Hydration Engine:** Multi-beverage catalog (`BeverageType`), effective hydration math, user daily hydration goals, OpenAPI documentation, and test suite.
-- [ ] **Phase 2 — Authentication & RBAC Security:** Stateless JWT authentication (`Spring Security`), `BCrypt` password hashing, and role separation (`ROLE_USER`, `ROLE_ADMIN`).
+- [x] **Phase 2 — Authentication & RBAC Security:** Stateless JWT authentication (`Spring Security`), `BCrypt` password hashing, and role separation (`ROLE_USER`, `ROLE_ADMIN`).
 - [ ] **Phase 3 — Dynamic Rule-Based Gamification Engine:** Configurable achievement rules (`TOTAL_DRINKS`, `TOTAL_VOLUME_ML`, `DAILY_STREAK`, `WATER_PERCENTAGE`) and streak tracking.
 - [ ] **Phase 4 — DevOps & CI/CD Pipeline:** Multi-stage `Dockerfile`, `docker-compose.yml` orchestration, and automated GitHub Actions CI/CD workflow with JaCoCo test coverage reporting.
 

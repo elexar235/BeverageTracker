@@ -80,14 +80,11 @@ public class ConsumptionService {
     public void checkAchievements(User user) {
         long totalDrinks = consumptionRepository.countByUserId(user.getId());
 
-        if (totalDrinks == 1) {
-            assignAchievement(user, "Novice Drinker");
-        }
-        if (totalDrinks == 5) {
-            assignAchievement(user, "Average cola enjoyer");
-        }
-        if (totalDrinks == 10) {
-            assignAchievement(user, "Diabetes is loading...lol");
+        for (Achievement achievement : achievementRepository.findAll()) {
+            Integer required = achievement.getRequiredConsumptions();
+            if (required != null && totalDrinks >= required) {
+                assignAchievement(user, achievement.getName());
+            }
         }
     }
 
